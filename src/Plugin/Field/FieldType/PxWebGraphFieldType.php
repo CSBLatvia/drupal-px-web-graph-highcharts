@@ -2,11 +2,8 @@
 
 namespace Drupal\px_web_graph\Plugin\Field\FieldType;
 
-use Drupal\Component\Utility\Random;
-use Drupal\Core\Field\FieldDefinitionInterface;
 use Drupal\Core\Field\FieldItemBase;
 use Drupal\Core\Field\FieldStorageDefinitionInterface;
-use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Drupal\Core\TypedData\DataDefinition;
 
@@ -22,11 +19,11 @@ use Drupal\Core\TypedData\DataDefinition;
  * )
  */
 class PxWebGraphFieldType extends FieldItemBase {
+
   /**
    * {@inheritdoc}
    */
   public static function propertyDefinitions(FieldStorageDefinitionInterface $field_definition) {
-    
     // Prevent early t() calls by using the TranslatableMarkup.
     $properties['title'] = DataDefinition::create('string')
       ->setLabel(new TranslatableMarkup('Title'))
@@ -36,58 +33,59 @@ class PxWebGraphFieldType extends FieldItemBase {
       ->setLabel(new TranslatableMarkup('Subtitle'))
       ->setSetting('case_sensitive', $field_definition->getSetting('case_sensitive'))
       ->setRequired(TRUE);
-      $properties['yAxisName'] = DataDefinition::create('string')
-      ->setLabel(new TranslatableMarkup('YAxisName'))
+    $properties['yAxisName'] = DataDefinition::create('string')
+      ->setLabel(new TranslatableMarkup('Y-axis name'))
       ->setSetting('case_sensitive', $field_definition->getSetting('case_sensitive'))
       ->setRequired(TRUE);
-      $properties['comment'] = DataDefinition::create('string')
+    $properties['comment'] = DataDefinition::create('string')
       ->setLabel(new TranslatableMarkup('Comment'))
       ->setSetting('case_sensitive', $field_definition->getSetting('case_sensitive'))
       ->setRequired(TRUE);
     $properties['displayType'] = DataDefinition::create('integer')
-      ->setLabel(new TranslatableMarkup('displayMode'))
+      ->setLabel(new TranslatableMarkup('Display type'))
       ->setRequired(TRUE);;
     $properties['displayMode'] = DataDefinition::create('integer')
-      ->setLabel(new TranslatableMarkup('displayMode'))
+      ->setLabel(new TranslatableMarkup('Display mode'))
       ->setRequired(TRUE);;
     $properties['savedResultUrl'] = DataDefinition::create('string')
-      ->setLabel(new TranslatableMarkup('Leinkja til PX-fyrispurning'))
+      ->setLabel(new TranslatableMarkup('Saved result URL'))
       ->setSetting('case_sensitive', $field_definition->getSetting('case_sensitive'))
       ->setRequired(TRUE);
     $properties['savedResultText'] = DataDefinition::create('string')
-      ->setLabel(new TranslatableMarkup('PX-úrslit'))
+      ->setLabel(new TranslatableMarkup('Saved result text'))
       ->setSetting('case_sensitive', $field_definition->getSetting('case_sensitive'))
       ->setRequired(TRUE);
     $properties['displayOptions'] = DataDefinition::create('string')
-      ->setLabel(new TranslatableMarkup('Serlig sniðuppsetan'))
+      ->setLabel(new TranslatableMarkup('Display options'))
       ->setSetting('case_sensitive', $field_definition->getSetting('case_sensitive'))
       ->setRequired(FALSE);
     $properties['seriesNames'] = DataDefinition::create('string')
-      ->setLabel(new TranslatableMarkup('SeriesNames'))
+      ->setLabel(new TranslatableMarkup('Series names'))
       ->setSetting('case_sensitive', $field_definition->getSetting('case_sensitive'))
       ->setRequired(TRUE);
     $properties['seriesColor'] = DataDefinition::create('string')
-      ->setLabel(new TranslatableMarkup('SeriesColor'))
+      ->setLabel(new TranslatableMarkup('Series color'))
       ->setSetting('case_sensitive', $field_definition->getSetting('case_sensitive'))
       ->setRequired(TRUE);
     $properties['seriesType'] = DataDefinition::create('string')
-      ->setLabel(new TranslatableMarkup('SeriesType'))
+      ->setLabel(new TranslatableMarkup('Series type'))
       ->setSetting('case_sensitive', $field_definition->getSetting('case_sensitive'))
-      ->setRequired(true);
+      ->setRequired(TRUE);
     $properties['seriesSign'] = DataDefinition::create('string')
-      ->setLabel(new TranslatableMarkup('SeriesSign'))
+      ->setLabel(new TranslatableMarkup('Series sign'))
       ->setSetting('case_sensitive', $field_definition->getSetting('case_sensitive'))
-      ->setRequired(true);
+      ->setRequired(TRUE);
     $properties['legendsVisibility'] = DataDefinition::create('string')
-      ->setLabel(new TranslatableMarkup('LegendsVisibility'))
+      ->setLabel(new TranslatableMarkup('Legend visibility'))
       ->setSetting('case_sensitive', $field_definition->getSetting('case_sensitive'))
-      ->setRequired(true);
+      ->setRequired(TRUE);
     $properties['sortDirection'] = DataDefinition::create('integer')
-      ->setLabel(new TranslatableMarkup('sortDirection'))
-      ->setRequired(true);
+      ->setLabel(new TranslatableMarkup('Sort direction'))
+      ->setRequired(TRUE);
     $properties['animate'] = DataDefinition::create('integer')
-      ->setLabel(new TranslatableMarkup('animate'))
-      ->setRequired(true);
+      ->setLabel(new TranslatableMarkup('Animate'))
+      ->setRequired(TRUE);
+
     return $properties;
   }
 
@@ -151,17 +149,17 @@ class PxWebGraphFieldType extends FieldItemBase {
           'binary' => $field_definition->getSetting('case_sensitive'),
         ],
         'seriesType' => [
-          'type' => $field_definition->getSetting('is_ascii') === true ? 'text' : 'text',
+          'type' => $field_definition->getSetting('is_ascii') === TRUE ? 'text' : 'text',
           'length' => 65000,
           'binary' => $field_definition->getSetting('case_sensitive'),
         ],
         'seriesSign' => [
-          'type' => $field_definition->getSetting('is_ascii') === true ? 'text' : 'text',
+          'type' => $field_definition->getSetting('is_ascii') === TRUE ? 'text' : 'text',
           'length' => 65000,
           'binary' => $field_definition->getSetting('case_sensitive'),
         ],
         'legendsVisibility' => [
-          'type' => $field_definition->getSetting('is_ascii') === true ? 'text' : 'text',
+          'type' => $field_definition->getSetting('is_ascii') === TRUE ? 'text' : 'text',
           'length' => 65000,
           'binary' => $field_definition->getSetting('case_sensitive'),
         ],
@@ -185,28 +183,28 @@ class PxWebGraphFieldType extends FieldItemBase {
   public function isEmpty() {
     $title = $this->get('title')->getValue();
     $subtitle = $this->get('subtitle')->getValue();
-    $yAxisName = $this->get('yAxisName')->getValue();
+    $y_axis_name = $this->get('yAxisName')->getValue();
     $comment = $this->get('comment')->getValue();
-    $displayType = $this->get('displayType')->getValue();
-    $displayMode = $this->get('displayMode')->getValue();
-    $savedResultUrl = $this->get('savedResultUrl')->getValue();
-    $savedResultText = $this->get('savedResultText')->getValue();
-    $displayOptions = $this->get('displayOptions')->getValue();
-    $seriesNames = $this->get('seriesNames')->getValue();
-    $seriesColor = $this->get('seriesColor')->getValue();
-    
+    $display_type = $this->get('displayType')->getValue();
+    $display_mode = $this->get('displayMode')->getValue();
+    $saved_result_url = $this->get('savedResultUrl')->getValue();
+    $saved_result_text = $this->get('savedResultText')->getValue();
+    $display_options = $this->get('displayOptions')->getValue();
+    $series_names = $this->get('seriesNames')->getValue();
+    $series_color = $this->get('seriesColor')->getValue();
+
     return empty($title) &&
       empty($subtitle) &&
-      empty($yAxisName) &&
+      empty($y_axis_name) &&
       empty($comment) &&
-      empty($displayType) && 
-      empty($displayMode) && 
-      empty($storedViewFromPx) && 
-      empty($savedResultUrl) && 
-      empty($savedResultText) && 
-      empty($displayOptions) &&
-      empty($seriesNames) &&
-      empty($seriesColor);
+      empty($display_type) &&
+      empty($display_mode) &&
+      empty($storedViewFromPx) &&
+      empty($saved_result_url) &&
+      empty($saved_result_text) &&
+      empty($display_options) &&
+      empty($series_names) &&
+      empty($series_color);
   }
 
 }

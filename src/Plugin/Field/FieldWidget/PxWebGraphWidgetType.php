@@ -5,6 +5,7 @@ namespace Drupal\px_web_graph\Plugin\Field\FieldWidget;
 use Drupal\Core\Field\FieldItemListInterface;
 use Drupal\Core\Field\WidgetBase;
 use Drupal\Core\Form\FormStateInterface;
+
 /**
  * Plugin implementation of the 'px_web_graph_widget_type' widget.
  *
@@ -19,29 +20,41 @@ use Drupal\Core\Form\FormStateInterface;
  */
 class PxWebGraphWidgetType extends WidgetBase {
 
-    private $id = 0;
-    public static $currentId;
+  /**
+   * @var int
+   */
+  private $id = 0;
 
-    public static function getNextId() {
-      PxWebGraphWidgetType::$currentId += 1;
-        return PxWebGraphWidgetType::$currentId;
-    }
+  /**
+   * @var int
+   */
+  public static $currentId;
+
+  /**
+   * @return mixed
+   */
+  public static function getNextId() {
+    PxWebGraphWidgetType::$currentId += 1;
+
+    return PxWebGraphWidgetType::$currentId;
+  }
+
   /**
    * {@inheritdoc}
    */
   public function formElement(FieldItemListInterface $items, $delta, array $element, array &$form, FormStateInterface $form_state) {
     // If cardinality is 1, ensure a label is output for the field by wrapping
     // it in a details element.
-      if($this->id == 0){
-          $this->id  = PxWebGraphWidgetType::getNextId();
-      }
+    if ($this->id == 0) {
+      $this->id = PxWebGraphWidgetType::getNextId();
+    }
 
-    $wrapperClass = 'px-web-'.$this->id;
-    $element += array(
-      '#attributes' => ['class' => [$wrapperClass]],
+    $wrapper_class = 'px-web-' . $this->id;
+    $element += [
+      '#attributes' => ['class' => [$wrapper_class]],
       '#attached' => [
         'drupalSettings' => [
-          'wrapperClass' => $wrapperClass
+          'wrapperClass' => $wrapper_class
         ],
         'library' => [
             'px_web_graph/px_web_graph_form_actions',
@@ -49,15 +62,12 @@ class PxWebGraphWidgetType extends WidgetBase {
             'px_web_graph/underscore-min'
         ],
       ],
-      // 'settings' => {
-      //   'setting1' => 'value1'
-      // }
-    );
+    ];
 
     if ($this->fieldDefinition->getFieldStorageDefinition()->getCardinality() == 1) {
-      $element += array(
+      $element += [
         '#type' => 'fieldset',
-      );
+      ];
     }
 
     $element['title'] = [
@@ -87,14 +97,14 @@ class PxWebGraphWidgetType extends WidgetBase {
     $element['displayType'] = [
       '#type' => 'radios',
       '#title' => $this->t('Display type'),
-      '#options' => array(0 => $this->t('Chart'), 1 => $this->t('Table'), 2 => $this->t('Land map')),
+      '#options' => [0 => $this->t('Chart'), 1 => $this->t('Table'), 2 => $this->t('Land map')],
       '#default_value' => isset($items[$delta]->displayType) ? $items[$delta]->displayType : 1,
     ];
 
     $element['displayMode'] = [
       '#type' => 'radios',
       '#title' => $this->t('Display mode'),
-      '#options' => array(0 => $this->t('Live data'), 1 => $this->t('Static data')),
+      '#options' => [0 => $this->t('Live data'), 1 => $this->t('Static data')],
       '#default_value' => isset($items[$delta]->displayMode) ? $items[$delta]->displayMode : 1,
     ];
 
@@ -115,7 +125,7 @@ class PxWebGraphWidgetType extends WidgetBase {
 
     $element['seriesNames'] = [
       '#type' => 'textfield',
-      '#title' => $this->t('Series name'),
+      '#title' => $this->t('Series names'),
       '#prefix' => '<div><span class="display-options-label">' . $this->t('<strong>Series configuration (Click to expand)</strong>') . '</span><div class="display-options-wrapper">',
       '#default_value' => isset($items[$delta]->seriesNames) ? $items[$delta]->seriesNames : "",
     ];
@@ -147,17 +157,16 @@ class PxWebGraphWidgetType extends WidgetBase {
     $element['sortDirection'] = [
       '#type' => 'radios',
       '#title' => $this->t('Sort direction'),
-      '#options' => array(0 => $this->t('ASC'), 1 => $this->t('DESC')),
+      '#options' => [0 => $this->t('ASC'), 1 => $this->t('DESC')],
       '#default_value' => isset($items[$delta]->sortDirection) ? $items[$delta]->sortDirection : 0,
     ];
 
     $element['animate'] = [
       '#type' => 'radios',
       '#title' => $this->t('Animate'),
-      '#options' => array(0 => $this->t('No'), 1 => $this->t('Yes')),
+      '#options' => [0 => $this->t('No'), 1 => $this->t('Yes')],
       '#default_value' => isset($items[$delta]->animate) ? $items[$delta]->animate : 0,
     ];
-
 
     $element['displayOptions'] = [
       '#type' => 'textarea',
@@ -168,41 +177,7 @@ class PxWebGraphWidgetType extends WidgetBase {
       '#default_value' => isset($items[$delta]->displayOptions) ? $items[$delta]->displayOptions : "",
     ];
 
-    
-
     return $element;
-    //return ['value' => $element];
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  protected function formMultipleElements(FieldItemListInterface $items, array &$form, FormStateInterface $form_state) {
-
-
-  //   // We don't want to render empty items on field collection fields
-  //   // unless a) the field collection is empty ; b) the form is rebuilding,
-  //   // which means that the user clicked on "Add another item"; or
-  //   // c) we are creating a new entity.
-  //   if ((count($items) > 0) && !$form_state->isRebuilding() && !$items->getEntity()->isNew()) {
-  //     $field_name = $this->fieldDefinition->getName();
-  //     $cardinality = $this->fieldDefinition->getFieldStorageDefinition()->getCardinality();
-  //     $parents = $form['#parents'];
-  //     if ($cardinality == FieldStorageDefinitionInterface::CARDINALITY_UNLIMITED) {
-  //       $field_state = static::getWidgetState($parents, $field_name, $form_state);
-  //       $field_state['items_count']--;
-  //       static::setWidgetState($parents, $field_name, $form_state, $field_state);
-  //     }
-  //   }
-
-  //   // Adjust wrapper identifiers as they are shared between parents and
-  //   // children in nested field collections.
-  //   $form['#wrapper_id'] = Html::getUniqueID($items->getName());
-  //   $elements = parent::formMultipleElements($items, $form, $form_state);
-  //   $elements['#prefix'] = '<div id="' . $form['#wrapper_id'] . '">';
-  //   $elements['#suffix'] = '</div>';
-  //   $elements['add_more']['#ajax']['wrapper'] = $form['#wrapper_id'];
-  //   return $elements;
   }
 
 }

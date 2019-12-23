@@ -26,4 +26,3 @@ Pre: Install paragraphs and entity reference revisions
 8. Setup default values that should be show for this field type (i.e. in PXWeb we want to have Grafur selected by default)
 
 9. If you want to add an other field then go to 6.
-

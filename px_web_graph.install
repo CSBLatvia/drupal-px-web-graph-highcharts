@@ -1,15 +1,12 @@
 <?php
 
-use Drupal\Core\Entity\Sql\SqlContentEntityStorage;
 use Drupal\Core\Entity\Sql\SqlContentEntityStorageException;
-use Drupal\Core\Utility\UpdateException;
-use Drupal\field\Entity\FieldConfig;
 
 /**
  * Will add the Sort Direction Field.
  */
 function px_web_graph_update_8101() {
-  addNewFields(['sortDirection']);
+  px_web_graph_add_new_fields(['sortDirection']);
 
   // Used by address_post_update_convert_names_subdivisions.
   \Drupal::state()->set('address_8101_processed', $processed_fields);
@@ -19,7 +16,7 @@ function px_web_graph_update_8101() {
  * Will add the Series Type Field.
  */
 function px_web_graph_update_8102() {
-  addNewFields(['seriesType']);
+  px_web_graph_add_new_fields(['seriesType']);
 
   // Used by address_post_update_convert_names_subdivisions.
   \Drupal::state()->set('address_8102_processed', $processed_fields);
@@ -29,8 +26,8 @@ function px_web_graph_update_8102() {
  * Will add the Legends Visibility Field.
  */
 function px_web_graph_update_8103() {
-  addNewFields(['legendsVisibility']);
-  
+  px_web_graph_add_new_fields(['legendsVisibility']);
+
   // Used by address_post_update_convert_names_subdivisions.
   \Drupal::state()->set('address_8103_processed', $processed_fields);
 }
@@ -38,10 +35,9 @@ function px_web_graph_update_8103() {
 /**
  * Will add the Series Sign Field.
  */
-function px_web_graph_update_8104()
-{
-  addNewFields(['seriesSign']);
-  
+function px_web_graph_update_8104() {
+  px_web_graph_add_new_fields(['seriesSign']);
+
   // Used by address_post_update_convert_names_subdivisions.
   \Drupal::state()->set('address_8104_processed', $processed_fields);
 }
@@ -49,15 +45,21 @@ function px_web_graph_update_8104()
 /**
  * Will add the Animate Field.
  */
-function px_web_graph_update_8105()
-{
-  addNewFields(['animate']);
-  
+function px_web_graph_update_8105() {
+  px_web_graph_add_new_fields(['animate']);
+
   // Used by address_post_update_convert_names_subdivisions.
   \Drupal::state()->set('address_8105_processed', $processed_fields);
 }
 
-function addNewFields($columns_to_add) {
+/**
+ * @param $columns_to_add
+ *
+ * @throws \Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException
+ * @throws \Drupal\Component\Plugin\Exception\PluginNotFoundException
+ * @throws \Drupal\Core\Entity\Sql\SqlContentEntityStorageException
+ */
+function px_web_graph_add_new_fields($columns_to_add) {
   $processed_fields = [];
   $field_type_manager = \Drupal::service('plugin.manager.field.field_type');
   $address_definition = $field_type_manager->getDefinition('px_web_graph_field_type');
@@ -85,18 +87,20 @@ function addNewFields($columns_to_add) {
       $field_name = $field_storage_definition->getName();
       try {
         $table = $table_mapping->getFieldTableName($field_name);
-      } catch (SqlContentEntityStorageException $e) {
+      }
+      catch (SqlContentEntityStorageException $e) {
         // Custom storage? Broken site? No matter what, if there is no table
         // or column, there s little we can do.
         continue;
       }
       // See if the field has a revision table.
-      $revision_table = null;
+      $revision_table = NULL;
       if ($entity_type->isRevisionable() && $field_storage_definition->isRevisionable()) {
         if ($table_mapping->requiresDedicatedTableStorage($field_storage_definition)) {
           $revision_table = $table_mapping->getDedicatedRevisionTableName($field_storage_definition);
-        } elseif ($table_mapping->allowsSharedTableStorage($field_storage_definition)) {
-          $revision_table = $entity_type->getRevisionDataTable() ? : $entity_type->getRevisionTable();
+        }
+        elseif ($table_mapping->allowsSharedTableStorage($field_storage_definition)) {
+          $revision_table = $entity_type->getRevisionDataTable() ?: $entity_type->getRevisionTable();
         }
       }
       // Load the installed field schema so that it can be updated.
@@ -120,14 +124,13 @@ function addNewFields($columns_to_add) {
         // Add the new column to the installed field schema.
         if ($field_schema_data) {
           $field_schema_data[$table]['fields'][$column] = $field_schema['columns'][$column_id];
-          $field_schema_data[$table]['fields'][$column]['not null'] = false;
+          $field_schema_data[$table]['fields'][$column]['not null'] = FALSE;
           if ($revision_table) {
             $field_schema_data[$revision_table]['fields'][$column] = $field_schema['columns'][$column_id];
-            $field_schema_data[$revision_table]['fields'][$column]['not null'] = false;
+            $field_schema_data[$revision_table]['fields'][$column]['not null'] = FALSE;
           }
         }
       }
     }
   }
 }
-?>

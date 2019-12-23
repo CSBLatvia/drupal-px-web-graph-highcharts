@@ -1,26 +1,33 @@
 <?php
 
 namespace Drupal\px_web_graph;
-use Drupal\px_web_graph\Px;
-use mb_convert_encoding;
-use mb_detect_encoding;
 
+/**
+ * Class Utilities
+ */
 class Utilities {
-    public function getPxFile(string $address) {
-        $px = null;
-        try {
-            $pxFileData = "";
-            $pxRequestRaw = file_get_contents($address);
-            if ($pxRequestRaw) {
-                $encoding = mb_detect_encoding($pxRequestRaw, 'iso-8859-15', true);
-                $pxFileData = mb_convert_encoding($pxRequestRaw, 'UTF-8', $encoding);
-                $px = new Px($pxFileData);
-            }
-        }
-        catch (Exception $e) { }  
 
-        return $px;
+  /**
+   * @param $address
+   *
+   * @return \Drupal\px_web_graph\Px|null
+   */
+  public function getPxFile($address) {
+    $px = NULL;
+
+    try {
+      $px_request_raw = file_get_contents($address);
+
+      if ($px_request_raw) {
+        $encoding = mb_detect_encoding($px_request_raw, 'iso-8859-15', TRUE);
+        $px_file_data = mb_convert_encoding($px_request_raw, 'UTF-8', $encoding);
+        $px = new Px($px_file_data);
+      }
     }
-}
+    catch (\Exception $e) {
+    }
 
-?>
+    return $px;
+  }
+
+}

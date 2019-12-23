@@ -199,7 +199,7 @@
             });
 
             ////Update displayOptionsDefaultsButton
-            displayOptionsDefaultsButton.html("<a class='chartDisplayOptionsButton' target='_blank' href='#'>Innles standard <strong>graf</strong> uppsetan</a><br/><a class='mapDisplayOptionsButton' target='_blank' href='#'>Innles standard <strong>landakort</strong> uppsetan</a>");
+            displayOptionsDefaultsButton.html("<a class='chartDisplayOptionsButton' target='_blank' href='#'>" + Drupal.t('Standard <strong>chart</strong> settings') + "</a><br/><a class='mapDisplayOptionsButton' target='_blank' href='#'>" + Drupal.t('Standard <strong>land map</strong> settings') + "</a>");
             displayOptionsDefaultsButton.find(".chartDisplayOptionsButton").click((function(e) {
                 e.preventDefault();
 
@@ -212,7 +212,7 @@
             }));
 
             //Update loadPXDataFromUrlAddressButton
-            loadPXDataFromUrlAddressButton.html("<a target='_blank' href='#'>Innles ella endurinnles dáta</a>");
+            loadPXDataFromUrlAddressButton.html(Drupal.t("<a target='_blank' href='#'>Retrieve data from PX-web</a>"));
             loadPXDataFromUrlAddressButton.click(function(e) {
                 e.preventDefault();
                 

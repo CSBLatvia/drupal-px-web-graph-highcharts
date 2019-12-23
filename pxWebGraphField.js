@@ -237,8 +237,7 @@
         let savedResultText = pxData["savedResultText"];
 
         if (!savedResultText["data"] || !savedResultText["metadata"]) {
-            pxPlaceholder.append("<h2>Kann ikki vísa. Onki 'úrslit' funni</h2>");
-            pxPlaceholder.append("<p>Fyri at loysa hendan trupulleikan, kanst tú fara inn á Edit og trýst á 'Innles ella endurinnles dáta'</p>");
+            pxPlaceholder.append(Drupal.t('No results found.'));
             return;
         }
 

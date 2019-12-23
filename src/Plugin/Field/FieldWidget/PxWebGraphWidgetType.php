@@ -62,45 +62,45 @@ class PxWebGraphWidgetType extends WidgetBase {
 
     $element['title'] = [
       '#type' => 'textfield',
-      '#title' => 'Yvirskrift',
+      '#title' => $this->t('Title'),
       '#default_value' => isset($items[$delta]->title) ? $items[$delta]->title : "",
     ];
 
     $element['subtitle'] = [
       '#type' => 'textfield',
-      '#title' => 'Undiryvirskrift',
+      '#title' => $this->t('Subtitle'),
       '#default_value' => isset($items[$delta]->subtitle) ? $items[$delta]->subtitle : "",
     ];
 
     $element['yAxisName'] = [
       '#type' => 'textfield',
-      '#title' => 'Navn á Y-ása',
+      '#title' => $this->t('Y-axis name'),
       '#default_value' => isset($items[$delta]->yAxisName) ? $items[$delta]->yAxisName : "",
     ];
 
     $element['comment'] = [
       '#type' => 'textfield',
-      '#title' => 'Viðmerking',
+      '#title' => $this->t('Comment'),
       '#default_value' => isset($items[$delta]->comment) ? $items[$delta]->comment : "",
     ];
 
     $element['displayType'] = [
       '#type' => 'radios',
-      '#title' => 'Vel Slag',
-      '#options' => array(0 => $this->t('Grafur'), 1 => $this->t('Talva'), 2 => $this->t('Landakort')),
+      '#title' => $this->t('Display type'),
+      '#options' => array(0 => $this->t('Chart'), 1 => $this->t('Table'), 2 => $this->t('Land map')),
       '#default_value' => isset($items[$delta]->displayType) ? $items[$delta]->displayType : 1,
     ];
 
     $element['displayMode'] = [
       '#type' => 'radios',
-      '#title' => 'Vísing',
-      '#options' => array(0 => $this->t('Beinleiðis vísing'), 1 => $this->t('Goym úrslit')),
+      '#title' => $this->t('Display mode'),
+      '#options' => array(0 => $this->t('Live data'), 1 => $this->t('Static data')),
       '#default_value' => isset($items[$delta]->displayMode) ? $items[$delta]->displayMode : 1,
     ];
 
     $element['savedResultUrl'] = [
       '#type' => 'textfield',
-      '#title' => 'Fyrispurningur úr hagtalsgrunni (PX-fíluslag)',
+      '#title' => $this->t('Saved result URL'),
       '#suffix' => '<div class="load-saved-result-button"></div>',
       '#attributes' => ['class' => ['edit-field-saved-result']],
       '#default_value' => isset($items[$delta]->savedResultUrl) ? $items[$delta]->savedResultUrl : "",
@@ -108,60 +108,60 @@ class PxWebGraphWidgetType extends WidgetBase {
 
     $element['savedResultText'] = [
       '#type' => 'textarea',
-      '#title' => 'Úrslit',      
+      '#title' => $this->t('Saved result text'),
       '#attributes' => ['class' => ['edit-field-saved-result-text']],
       '#default_value' => isset($items[$delta]->savedResultText) ? $items[$delta]->savedResultText : "",
     ];
 
     $element['seriesNames'] = [
       '#type' => 'textfield',
-      '#title' => 'Seriunøvn',      
-      '#prefix' => '<div><span class="display-options-label"><strong>Uppsetan</strong></span><div class="display-options-wrapper">',
+      '#title' => $this->t('Series name'),
+      '#prefix' => '<div><span class="display-options-label">' . $this->t('<strong>Series configuration (Click to expand)</strong>') . '</span><div class="display-options-wrapper">',
       '#default_value' => isset($items[$delta]->seriesNames) ? $items[$delta]->seriesNames : "",
     ];
 
     $element['seriesColor'] = [
       '#type' => 'textfield',
-      '#title' => 'Seriulitir',      
+      '#title' => $this->t('Series color'),
       '#default_value' => isset($items[$delta]->seriesColor) ? $items[$delta]->seriesColor : "",
     ];
 
     $element['seriesType'] = [
       '#type' => 'textfield',
-      '#title' => 'Seriuslag',
+      '#title' => $this->t('Series type'),
       '#default_value' => isset($items[$delta]->seriesType) ? $items[$delta]->seriesType : "",
     ];
 
     $element['seriesSign'] = [
       '#type' => 'textfield',
-      '#title' => 'Seriufortekn',
+      '#title' => $this->t('Series sign'),
       '#default_value' => isset($items[$delta]->seriesSign) ? $items[$delta]->seriesSign : "",
     ];
 
     $element['legendsVisibility'] = [
       '#type' => 'textfield',
-      '#title' => 'Legends vísing',
+      '#title' => $this->t('Legend visibility'),
       '#default_value' => isset($items[$delta]->legendsVisibility) ? $items[$delta]->legendsVisibility : "",
     ];
 
     $element['sortDirection'] = [
       '#type' => 'radios',
-      '#title' => 'Legend sortering',
+      '#title' => $this->t('Sort direction'),
       '#options' => array(0 => $this->t('ASC'), 1 => $this->t('DESC')),
       '#default_value' => isset($items[$delta]->sortDirection) ? $items[$delta]->sortDirection : 0,
     ];
 
     $element['animate'] = [
       '#type' => 'radios',
-      '#title' => 'Livandi',
-      '#options' => array(0 => $this->t('Ikki livandi'), 1 => $this->t('Livandi')),
+      '#title' => $this->t('Animate'),
+      '#options' => array(0 => $this->t('No'), 1 => $this->t('Yes')),
       '#default_value' => isset($items[$delta]->animate) ? $items[$delta]->animate : 0,
     ];
-    
+
 
     $element['displayOptions'] = [
       '#type' => 'textarea',
-      '#title' => 'Uppsetan',      
+      '#title' => $this->t('Display options'),
       '#prefix' => '<div class="display-options-wrapper">',
       '#suffix' => '<div class="load-display-options-default-button"></div></div></div></div>',
       '#attributes' => ['class' => ['edit-field-display-options']],

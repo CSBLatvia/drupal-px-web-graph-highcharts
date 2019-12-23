@@ -1,0 +1,5 @@
+{
+    "name": "hagstovan/px_web_graph",
+    "description": "Provides tools to integrate PX-web with Highcharts.",
+    "type": "drupal-module"
+}
